@@ -6,7 +6,8 @@ Descripció general del projecte
 
 # 1. Sensor, lectura dades microcontrolador
 definicio del que s'ha fet en aquest apartat. Explicar que utilitzarem el microcontrolador ESP32
-### 1.1 Característiques del sensor i conexió amb el  microcontrolador: 
+
+### 1.1 Característiques del sensor
 El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists'. Les característiques principals d'aquest sensor són:
 
 
@@ -20,13 +21,14 @@ El sensor que implementarem en el nostre projecte és un sensor de pressió sono
 - 2 modes de mesura: 125ms (fast mode) i 1,000ms (slow mode)
 - Threshold detection and interrupt
 - 100-reading buffer to allow host MCU to sleep
+<br>
 
 El sensor per defecte s'inicialitza amb la següent configuració:
 
 - **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. 
 <br>
 
-- **1000 ms averaging duration** (“slow mode” de sonometres comercials que trobem al mercat) 
+- **1000 ms averaging duration** (“slow mode” de sonòmetres comercials que trobem al mercat) 
 <br>
 
 - Interrupt function **disabled** 
@@ -36,8 +38,25 @@ El sensor per defecte s'inicialitza amb la següent configuració:
 
 Aquesta configuració per defecte és la que utlitzarem en el nostre projecte. 
 
-La conexió amb el microcontrolador és la tipica en una conexio I2C. 
 <br>
+
+La conexió amb el microcontrolador és la tipica en una conexió I2C. En el nostre microcontrolador ESP32 utilitzem els pins: 
+
+<br>
+
+### 1.2 Comunicació amb el sensor:
+
+La comunicació entre el sensor i el microcontrolador es fa per mitjà d'un bus I2C. Es tracta d'una conexió sincrona que només requereix d'un bus de dos canals:
+
+- **CLK**: canal pel qual s'envia el senyal de rellotge per poder sincronitzar els dispositius que comunica.
+- **SDA**: canal pel qual s'envia la informació que es transmet. Aquesta anirà anirà sincronitzada amb la senyal de rellotge.
+
+L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del bus I2C es conecten a la ESP32 pels pins: **GPIO22** i **GPIO21**
+
+![ESP32 pinout](ESP32-I2C-Pins.jpg)
+
+<br>
+
 ### 1.2 Codi de prova del sensor:
 Hem creat un codi de prova per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
 
