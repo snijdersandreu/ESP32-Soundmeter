@@ -57,7 +57,7 @@ L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del b
 
 <br>
 
-### 1.2 Codi de prova del sensor:
+### 1.3 Codi de prova del sensor:
 Hem creat un codi de prova per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
 
 Hem implementat dues llibreries:
@@ -110,11 +110,11 @@ void loop()
 ~~~
 <br>
 
-### 1.3 Comprovació del correcte funcionament del sensor: 
+### 1.4 Comprovació del correcte funcionament del sensor: 
 <br>
 
 
-### 1.4 Implementació en el codi final del projecte:
+### 1.5 Implementació en el codi final del projecte:
 
 ~~~cpp
 void loop()
