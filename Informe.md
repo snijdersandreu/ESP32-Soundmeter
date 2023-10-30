@@ -95,7 +95,7 @@ void loop()
 
 ### 1.4 Implementació en el codi final del projecte:
 
-
+hola aixo es una prova
 <br><hr>
 
 # 2. Transmissió dades al Sentilo
