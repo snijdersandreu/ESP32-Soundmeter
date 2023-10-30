@@ -23,12 +23,12 @@ El sensor que implementarem en el nostre projecte és un sensor de pressió sono
 
 El sensor per defecte s'inicialitza amb la següent configuració:
 
-- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats.
-<br>
-- **1000 ms averaging duration** (“slow mode” de sonometres comercials que trobem al mercat)
-<br>
-- Interrupt function **disabled**
-<br>
+- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. <br>
+
+- **1000 ms averaging duration** (“slow mode” de sonometres comercials que trobem al mercat) <br>
+
+- Interrupt function **disabled** <br>
+
 - **L'historial de registres s'actualitza segons el 'averaging duration'** (**1000 ms**) i es manté un registre de valor màxim i mínim.
 
 Aquesta configuració per defecte és la que utlitzarem en el nostre projecte. 
