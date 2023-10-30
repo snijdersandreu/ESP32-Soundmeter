@@ -23,11 +23,14 @@ El sensor que implementarem en el nostre projecte és un sensor de pressió sono
 
 El sensor per defecte s'inicialitza amb la següent configuració:
 
-- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. <br>
+- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. 
+<br>
 
-- **1000 ms averaging duration** (“slow mode” de sonometres comercials que trobem al mercat) <br>
+- **1000 ms averaging duration** (“slow mode” de sonometres comercials que trobem al mercat) 
+<br>
 
-- Interrupt function **disabled** <br>
+- Interrupt function **disabled** 
+<br>
 
 - **L'historial de registres s'actualitza segons el 'averaging duration'** (**1000 ms**) i es manté un registre de valor màxim i mínim.
 
@@ -88,14 +91,22 @@ void loop()
 ~~~
 <br>
 
-### 1.3 Comprovació del correcte funcionament del sensor:
-
-
+### 1.3 Comprovació del correcte funcionament del sensor: 
 <br>
+
 
 ### 1.4 Implementació en el codi final del projecte:
 
-hola aixo es una prova, no se com va
+~~~cpp
+void loop()
+{
+  ...
+  byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
+  PUT_request(client, SPL_dBA);
+  ...
+}
+~~~
+
 <br><hr>
 
 # 2. Transmissió dades al Sentilo
