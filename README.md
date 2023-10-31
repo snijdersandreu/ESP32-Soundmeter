@@ -53,7 +53,7 @@ L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del b
 <br>
 
 ### 1.3 Codi de prova del sensor:
-Hem creat un codi de prova per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
+Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
 
 Implementem dues llibreries:
 ~~~cpp
