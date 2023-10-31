@@ -5,7 +5,7 @@ Descripció general del projecte
 <br><hr>
 
 # 1. Sensor, lectura dades microcontrolador
-definicio del que s'ha fet en aquest apartat. Explicar que utilitzarem el microcontrolador ESP32
+En aquest apartat hem 
 
 ### 1.1 Característiques del sensor
 El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Les característiques principals d'aquest sensor són:
