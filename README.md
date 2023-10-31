@@ -8,7 +8,7 @@ Descripció general del projecte
 definicio del que s'ha fet en aquest apartat. Explicar que utilitzarem el microcontrolador ESP32
 
 ### 1.1 Característiques del sensor
-El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (I2C Decibel Sound Level Meter Module'). Les característiques principals d'aquest sensor són:
+El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Les característiques principals d'aquest sensor són:
 
 
 - Precisió de ±2 dB SPL
@@ -27,7 +27,7 @@ Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de quali
 
 El sensor per defecte s'inicialitza amb la següent configuració:
 
-- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. 
+- **Ponderació A:** la utilitzada per determinar el soroll ambiental d'activitats. És la utilitzada pels diferents càlculs de nivell equivalent diurn i nocturn que es regulen a les ciutats. (dBA)
 
 - **1000 ms averaging duration** (“slow mode” de sonòmetres comercials que trobem al mercat) 
 
@@ -36,12 +36,8 @@ El sensor per defecte s'inicialitza amb la següent configuració:
 - **L'historial de registres s'actualitza segons el 'averaging duration'** (**1000 ms**) i es manté un registre de valor màxim i mínim.
 
 Aquesta configuració per defecte és la que utlitzarem en el nostre projecte. 
-
 <br>
 
-La conexió amb el microcontrolador és la tipica en una conexió I2C. En el nostre microcontrolador ESP32 utilitzem els pins: 
-
-<br>
 
 ### 1.2 Comunicació amb el sensor:
 
@@ -59,17 +55,17 @@ L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del b
 ### 1.3 Codi de prova del sensor:
 Hem creat un codi de prova per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
 
-Hem implementat dues llibreries:
+Implementem dues llibreries:
 ~~~cpp
 include <Arduino.h>
 include <Wire.h> //per la comunicació I2C amb el sensor
 ~~~
 <br>
 
-Hem definit dos valors constants que utilitzarem en la comunicació I2C:
+Definim dos valors constants que utilitzarem en la comunicació I2C:
 ~~~cpp
-define PCBARTISTS_DBM       0x48 //identificador del sensor
-define I2C_REG_DECIBEL      0x0A //registre de la mesura SPL
+define PCBARTISTS_DBM       0x48 //identificador del dispositiu I2C
+define I2C_REG_DECIBEL      0x0A //registre de la mesura en dBA SPL
 ~~~
 <br>
 
