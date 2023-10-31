@@ -53,7 +53,7 @@ L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del b
 <br>
 
 ### 1.3 Codi de prova del sensor:
-Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament del sensor i la comunicació amb el microcontrolador.
+Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament del sensor i la comunicació amb el microcontrolador. Aquest codi permet provar diferents configuracions del sensor, pero pel nostre projecte només ens cal el següent:
 
 Implementem dues llibreries:
 ~~~cpp
@@ -65,7 +65,7 @@ include <Wire.h> //per la comunicació I2C amb el sensor
 Definim dos valors constants que utilitzarem en la comunicació I2C:
 ~~~cpp
 define PCBARTISTS_DBM       0x48 //identificador del dispositiu I2C
-define I2C_REG_DECIBEL      0x0A //registre de la mesura en dBA SPL
+define I2C_REG_DECIBEL      0x0A //registre de memoria que conté la mesura en dBA SPL
 ~~~
 <br>
 
@@ -110,7 +110,11 @@ void loop()
 
 
 ### 1.5 Implementació en el codi final del projecte:
+Un cop ja hem comprovat que el sensor genera dades reals i que el microcontrolador les llegeix correctament, podem implementar el codi anterior al nostre projecte.
 
+Implementarem les mateixes llibreries que en el codi de prova, aixi com les constants de conexió I2C i la funció per llegir registres *reg_read()*.
+
+La principal diferència és que enlloc d'imprimir el valor obtingut per pantalla, l'enviarem al servidor de Sentilo fent ús de la funció *PUT_request()*.
 ~~~cpp
 void loop()
 {
@@ -120,6 +124,7 @@ void loop()
   ...
 }
 ~~~
+\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció al següent apartat.
 
 <br><hr>
 
