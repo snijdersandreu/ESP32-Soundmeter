@@ -93,7 +93,7 @@ void setup()
 ~~~
 <br>
 
-En el 'loop' bàsicament llegim el registre de memoria del dispositiu I2C que es correspon amb el nivell de pressió sonora detectat (1 byte). Posteriorment es mostra aquest nivell pel serial monitor. Es repeteix aquest procés cada 2 segons:
+En el 'loop' bàsicament llegim el registre de memòria del dispositiu I2C que es correspon amb el nivell de pressió sonora detectat (1 byte). Posteriorment es mostra aquest nivell pel serial monitor. Es repeteix aquest procés cada 2 segons:
 ~~~cpp
 void loop() 
 {
