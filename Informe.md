@@ -8,7 +8,7 @@ Descripció general del projecte
 definicio del que s'ha fet en aquest apartat. Explicar que utilitzarem el microcontrolador ESP32
 
 ### 1.1 Característiques del sensor
-El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists'. Les característiques principals d'aquest sensor són:
+El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (I2C Decibel Sound Level Meter Module'). Les característiques principals d'aquest sensor són:
 
 
 - Precisió de ±2 dB SPL
@@ -21,6 +21,8 @@ El sensor que implementarem en el nostre projecte és un sensor de pressió sono
 - 2 modes de mesura: 125ms (fast mode) i 1,000ms (slow mode)
 - Threshold detection and interrupt
 - 100-reading buffer to allow host MCU to sleep
+
+Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables.
 <br>
 
 El sensor per defecte s'inicialitza amb la següent configuració:
@@ -46,7 +48,7 @@ La conexió amb el microcontrolador és la tipica en una conexió I2C. En el nos
 La comunicació entre el sensor i el microcontrolador es fa per mitjà d'un bus I2C. Es tracta d'una conexió sincrona que només requereix d'un bus de dos canals:
 
 - **CLK**: canal pel qual s'envia el senyal de rellotge per poder sincronitzar els dispositius que comunica.
-- **SDA**: canal pel qual s'envia la informació que es transmet. Aquesta anirà anirà sincronitzada amb la senyal de rellotge.
+- **SDA**: canal pel qual s'envia la informació que es transmet. Aquesta anirà sincronitzada amb la senyal de rellotge.
 
 L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del bus I2C es conecten a la ESP32 pels pins: **GPIO22** i **GPIO21**
 
@@ -66,8 +68,8 @@ include <Wire.h> //per la comunicació I2C amb el sensor
 
 Hem definit dos valors constants que utilitzarem en la comunicació I2C:
 ~~~cpp
-define PCBARTISTS_DBM       0x48
-define I2C_REG_DECIBEL      0x0A
+define PCBARTISTS_DBM       0x48 //identificador del sensor
+define I2C_REG_DECIBEL      0x0A //registre de la mesura SPL
 ~~~
 <br>
 
@@ -95,7 +97,7 @@ void setup()
 ~~~
 <br>
 
-En el loop basicament llegim el registre de memoria del dispositiu I2C que es correspon amb el nivell de pressió sonora detectat (1 byte). Posteriorment es mostra aquest nivell pel serial monitor. Es repeteix aquest procés cada 2 segons:
+En el 'loop' bàsicament llegim el registre de memoria del dispositiu I2C que es correspon amb el nivell de pressió sonora detectat (1 byte). Posteriorment es mostra aquest nivell pel serial monitor. Es repeteix aquest procés cada 2 segons:
 ~~~cpp
 void loop() 
 {
