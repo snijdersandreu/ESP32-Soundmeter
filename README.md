@@ -124,7 +124,7 @@ void loop()
   ...
 }
 ~~~
-\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció al següent apartat.
+\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció en el següent apartat.
 
 <br><hr>
 
