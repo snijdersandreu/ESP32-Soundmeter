@@ -17,7 +17,7 @@ Les característiques principals d'aquest sensor són:
 - Rang de mesura de 30 Hz a 8 kHz
 - Comunicació amb protocol I2C (Adress = 0x48)
 - Alimentació 5mA @ 3.3V (measurement) and 100uA (sleep)
-- Es pot seleccionar ponderació de freqüències: A-weighted, C-weighted, Z-weighted
+- Es pot seleccionar ponderació de freqüències: ponderació A, ponderació C, ponderació Z
 - Temps de 'averaging' de la mesura ajustable 10ms to 10,000 ms
 - 2 modes de mesura: 125ms (fast mode) i 1,000ms (slow mode)
 - Threshold detection and interrupt
