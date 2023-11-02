@@ -57,7 +57,7 @@ Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament de
 Implementem dues llibreries:
 ~~~cpp
 include <Arduino.h>
-include <Wire.h> //per la comunicació I2C amb el sensor
+include <Wire.h>                 //per la comunicació I2C amb el sensor
 ~~~
 <br>
 
