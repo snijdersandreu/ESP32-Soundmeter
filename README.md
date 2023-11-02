@@ -8,7 +8,8 @@ Descripció general del projecte
 definicio del que s'ha fet en aquest apartat. Explicar que utilitzarem el microcontrolador ESP32
 
 ### 1.1 Característiques del sensor
-El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables. Les característiques principals d'aquest sensor són:
+El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables. 
+Les característiques principals d'aquest sensor són:
 
 
 - Precisió de ±2 dB SPL
