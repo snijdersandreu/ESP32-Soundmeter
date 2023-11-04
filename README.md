@@ -1,5 +1,5 @@
 # Projecte Grup 4: Sonòmetre
-  Descripció general del projecte
+Descripció general del projecte
 
 
 <br><hr>
