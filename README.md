@@ -8,7 +8,8 @@ Descripció general del  projecte
 En aquest apartat hem 
 
 ### 1.1 Característiques del sensor
-El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Les característiques principals d'aquest sensor són:
+El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables. 
+Les característiques principals d'aquest sensor són:
 
 
 - Precisió de ±2 dB SPL
@@ -16,13 +17,11 @@ El sensor que implementarem en el nostre projecte és un sensor de pressió sono
 - Rang de mesura de 30 Hz a 8 kHz
 - Comunicació amb protocol I2C (Adress = 0x48)
 - Alimentació 5mA @ 3.3V (measurement) and 100uA (sleep)
-- Es pot seleccionar ponderació de freqüències: A-weighted, C-weighted, Z-weighted
+- Es pot seleccionar ponderació de freqüències: ponderació A, ponderació C, ponderació Z
 - Temps de 'averaging' de la mesura ajustable 10ms to 10,000 ms
 - 2 modes de mesura: 125ms (fast mode) i 1,000ms (slow mode)
 - Threshold detection and interrupt
 - 100-reading buffer to allow host MCU to sleep
-
-Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables.
 <br>
 
 El sensor per defecte s'inicialitza amb la següent configuració:
@@ -58,7 +57,7 @@ Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament de
 Implementem dues llibreries:
 ~~~cpp
 include <Arduino.h>
-include <Wire.h> //per la comunicació I2C amb el sensor
+include <Wire.h>                 //per la comunicació I2C amb el sensor
 ~~~
 <br>
 
@@ -124,7 +123,7 @@ void loop()
   ...
 }
 ~~~
-\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció al següent apartat.
+\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció en el següent apartat.
 
 <br><hr>
 
