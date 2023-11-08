@@ -34,44 +34,46 @@ byte reg_read(byte addr, byte reg)
   return data;
 }
 
-void reconnect_wifi() 
-{
-  // Connect to WiFi
-  WiFi.begin(ssid, password);
-
-  // Wait for the connection to be established
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000); // Wait for 1 second
+void reconnect_wifi() {
+  if (WiFi.status() != WL_CONNECTED) {
     Serial.println("Connecting to WiFi...");
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(1000);
+    }
+    Serial.println("Connected to WiFi");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
   }
-
-  Serial.println("Connected to WiFi");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
 }
 
-void reconnect_client(WiFiClient &client, const char* host, const int httpPort) 
-{
-  while (!client.connected())
-  {
-    if (client.connect(host, httpPort)){} 
-    else{
+void reconnect_client() {
+  if (!client.connected()) {
+    Serial.println("Connecting to the server...");
+    while (!client.connect(host, httpPort)) {
       delay(2000);
     }
   }
 }
 
-void PUT_request(WiFiClient &client, byte SPL_dBA)
+String make_put_request(byte SPL_dBA) {
+  String request = "PUT /data/";
+  request += String(provider);
+  request += '/';
+  request += String(sensor);
+  request += '/';
+  request += String(SPL_dBA);
+  request += " HTTP/1.1\r\nIDENTITY_KEY: ";
+  request += String(token);
+  request += "\r\n\r\n";
+  
+  return request;
+}
+
+void send_PUT_request(WiFiClient &client, byte SPL_dBA)
 {
-  client.print("PUT /data/");
-  client.print(String(provider));
-  client.print('/');
-  client.print(String(sensor));
-  client.print('/');
-  client.print(String(SPL_dBA));
-  client.print(" HTTP/1.1\r\nIDENTITY_KEY: ");
-  client.print(String(token));
-  client.print("\r\n\r\n");
+  String request = make_put_request(SPL_dBA);
+  client.print(request);
 }
 
 void setup() 
@@ -82,6 +84,7 @@ void setup()
   delay(10);
 
   WiFi.mode(WIFI_STA); 
+  reconnect_wifi();
 }
 
   // --------------------------------------------------------------
@@ -89,16 +92,15 @@ void setup()
 void loop()
 { 
   reconnect_wifi(); // Reconnect to WiFi
-  reconnect_client(client, host, httpPort);
+  reconnect_client();
 
-  byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
+  //byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
+  byte SPL_dBA = 0x14;
+  send_PUT_request(client, SPL_dBA);
 
-  PUT_request(client, SPL_dBA);
-
-    // si ha respondido esperamos un poco para cerrar la conexion con el servidor
-  unsigned long timeout;
-  timeout = millis();
-  while (millis() - timeout < 200);
+  // si ha respondido esperamos un poco para cerrar la conexion con el servidor
+  unsigned long timeout = millis();
+  while (millis() - timeout < 200){}
   // Cerramos la conexion
   client.stop();
 
