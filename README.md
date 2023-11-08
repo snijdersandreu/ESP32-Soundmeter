@@ -119,13 +119,41 @@ void loop()
 {
   ...
   byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
-  PUT_request(client, SPL_dBA);
+  send_PUT_request(client, SPL_dBA);
   ...
 }
 ~~~
-\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció 'PUT_request' la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció en el següent apartat.
+\* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció "send_PUT_request" la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció en el següent apartat ([2. Transmissió dades al Sentilo](#2-transmissió-dades-al-sentilo)). //editar titol i link quan s'hagi fet aqueta part)
 
-<br><hr>
+### 1.6 Eficiència energètica
+
+
+El sonòmetre està pensat per ser col·locat en una façana o finestra de manera senzilla. Per tal de facilitar la instal·lació, l'alimentació del microcontrolador serà per mitjà d'una bateria o pila.
+
+Les dades del Sentilo seràn actualitzades cada //temps interval a concretar encara//. Per tant, en tot aquest interval de temps no cal que el microcontrolador estigui en ple rendiment. És per aquest motiu que implementem una funció que ens permeti induir el microcontrolador en un estat de "Deep Sleep" durant un cert periode de temps:
+
+~~~cpp
+void DeepSleep(uint64_t timeInMicroseconds) 
+{
+  esp_sleep_enable_timer_wakeup(timeInMicroseconds);
+  Serial.println("Mode Deep Sleep");
+  esp_deep_sleep_start();
+}
+~~~
+
+Cridarem aquesta funció cada vegada que el microcontrolador hagi acabat la comunicació amb el servidor i hagi enviat les dades. És a dir que el cridarem al final de cada iteració del "loop":
+
+~~~cpp
+void loop()
+{ 
+  ...
+  byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
+  send_PUT_request(client, SPL_dBA);
+  ...
+  ...
+  DeepSleep(300000000); //temps expresat en microsegons
+}
+~~~
 
 # 2. Transmissió dades al Sentilo
 definicio del que s'ha fet en aquest apartat
