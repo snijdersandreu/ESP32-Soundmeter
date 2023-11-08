@@ -6,7 +6,7 @@ Descripció general del projecte
 
 # 1. Sensor, lectura dades microcontrolador
 En aquest apartat hem 
-
+<br>
 ### 1.1 Característiques del sensor
 El sensor que implementarem en el nostre projecte és un sensor de pressió sonora de la marca de components 'PCB Artists' (**I2C Decibel Sound Level Meter Module**). Hem escollit aquest sensor per la seva precisió. Es tracta d'un sensor de qualitat, de gama mitja podriem dir. No es troba al nivell de sonometres professionals (amb preus molt elevats) però és prou bó per oferir dades fiables. 
 Les característiques principals d'aquest sensor són:
@@ -35,7 +35,7 @@ El sensor per defecte s'inicialitza amb la següent configuració:
 - **L'historial de registres s'actualitza segons el 'averaging duration'** (**1000 ms**) i es manté un registre de valor màxim i mínim.
 
 Aquesta configuració per defecte és la que utlitzarem en el nostre projecte. 
-<br>
+<br><br>
 
 
 ### 1.2 Comunicació amb el sensor:
@@ -49,7 +49,7 @@ L'alimentació del sensor es realitza a través del pin de 3V3. Els canals del b
 
 ![ESP32 pinout](ESP32-I2C-Pins.jpg)
 
-<br>
+<br><br>
 
 ### 1.3 Codi de prova del sensor:
 Hem creat un [codi de prova](/prova_sensor.cpp) per comprovar el funcionament del sensor i la comunicació amb el microcontrolador. Aquest codi permet provar diferents configuracions del sensor, pero pel nostre projecte només ens cal el següent:
@@ -102,18 +102,21 @@ void loop()
   delay(2000);
 }
 ~~~
-<br>
+<br><br>
 
-### 1.4 Comprovació del correcte funcionament del sensor: 
-<br>
+### 1.4 Comprovació del correcte funcionament del sensor:
 
+
+
+<br><br>
 
 ### 1.5 Implementació en el codi final del projecte:
 Un cop ja hem comprovat que el sensor genera dades reals i que el microcontrolador les llegeix correctament, podem implementar el codi anterior al nostre projecte.
 
 Implementarem les mateixes llibreries que en el codi de prova, aixi com les constants de conexió I2C i la funció per llegir registres *reg_read()*.
 
-La principal diferència és que enlloc d'imprimir el valor obtingut per pantalla, l'enviarem al servidor de Sentilo fent ús de la funció *PUT_request()*.
+La principal diferència és que enlloc d'imprimir el valor obtingut pel Serial Monitor, l'enviarem al servidor de Sentilo fent ús de la funció *send_PUT_request()*.
+<br>
 ~~~cpp
 void loop()
 {
@@ -124,24 +127,25 @@ void loop()
 }
 ~~~
 \* El valor **SPL_dBA** és de tipus *byte*; és la pròpia funció "send_PUT_request" la que s'encarrega de transformar-lo a *string*. Més informació sobre aquesta funció en el següent apartat ([2. Transmissió dades al Sentilo](#2-transmissió-dades-al-sentilo)). //editar titol i link quan s'hagi fet aqueta part)
+<br><br>
 
 ### 1.6 Eficiència energètica
-
-
 El sonòmetre està pensat per ser col·locat en una façana o finestra de manera senzilla. Per tal de facilitar la instal·lació, l'alimentació del microcontrolador serà per mitjà d'una bateria o pila.
 
 Les dades del Sentilo seràn actualitzades cada //temps interval a concretar encara//. Per tant, en tot aquest interval de temps no cal que el microcontrolador estigui en ple rendiment. És per aquest motiu que implementem una funció que ens permeti induir el microcontrolador en un estat de "Deep Sleep" durant un cert periode de temps:
 
 ~~~cpp
-void DeepSleep(uint64_t timeInMicroseconds) 
+void DeepSleep(uint64_t interval)//microsegons
 {
-  esp_sleep_enable_timer_wakeup(timeInMicroseconds);
+  esp_sleep_enable_timer_wakeup(interval); //"despertador"
   Serial.println("Mode Deep Sleep");
   esp_deep_sleep_start();
 }
 ~~~
+<br>
 
 Cridarem aquesta funció cada vegada que el microcontrolador hagi acabat la comunicació amb el servidor i hagi enviat les dades. És a dir que el cridarem al final de cada iteració del "loop":
+
 
 ~~~cpp
 void loop()
@@ -151,7 +155,7 @@ void loop()
   send_PUT_request(client, SPL_dBA);
   ...
   ...
-  DeepSleep(300000000); //temps expresat en microsegons
+  DeepSleep(300000000); //interval de temps expresat en microsegons
 }
 ~~~
 

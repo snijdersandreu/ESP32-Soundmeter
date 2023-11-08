@@ -23,10 +23,10 @@ WiFiClient client;
 const int httpPort = 8081;
 
 //Funció per entrar en mode deep sleep
-void DeepSleep(uint64_t timeInMicroseconds) 
+void DeepSleep(uint64_t interval) //microsegons
 {
   // Configurem timer per aturi el mode Deep Sleep
-  esp_sleep_enable_timer_wakeup(timeInMicroseconds);
+  esp_sleep_enable_timer_wakeup(interval);
 
   Serial.println("Mode Deep Sleep");
   esp_deep_sleep_start();
@@ -50,7 +50,7 @@ void reconnect_wifi()
     Serial.println("Connecting to WiFi...");
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
-      delay(1000);
+      delay(500);
     }
     Serial.println("Connected to WiFi");
     Serial.print("IP address: ");
@@ -63,7 +63,7 @@ void reconnect_client()
   if (!client.connected()) {
     Serial.println("Connecting to the server...");
     while (!client.connect(host, httpPort)) {
-      delay(2000);
+      delay(500);
     }
   }
 }
@@ -83,7 +83,7 @@ String make_put_request(byte SPL_dBA)
   return request;
 }
 
-void send_PUT_request(WiFiClient &client, byte SPL_dBA)
+void send_PUT_request(byte SPL_dBA)
 {
   String request = make_put_request(SPL_dBA);
   client.print(request);
@@ -108,7 +108,8 @@ void loop()
   reconnect_client();
 
   byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
-  send_PUT_request(client, SPL_dBA);
+  //prova: byte SPL_dBA = 0x14;
+  send_PUT_request(SPL_dBA);
 
   // si ha respondido esperamos un poco para cerrar la conexion con el servidor
   unsigned long timeout = millis();
