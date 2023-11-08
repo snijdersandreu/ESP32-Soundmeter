@@ -22,6 +22,15 @@ const char* sensor = "Sensor_sonometre";
 WiFiClient client;
 const int httpPort = 8081;
 
+//Funció per entrar en mode deep sleep
+void DeepSleep(uint64_t timeInMicroseconds) {
+  // Configurem timer per aturi el mode Deep Sleep
+  esp_sleep_enable_timer_wakeup(timeInMicroseconds);
+
+  Serial.println("Mode Deep Sleep");
+  esp_deep_sleep_start();
+}
+
 //Funció per llegir un únic byte del dispositiu I2C (sensor_sonometre)
 // memory-register read
 byte reg_read(byte addr, byte reg)
@@ -104,6 +113,7 @@ void loop()
   // Cerramos la conexion
   client.stop();
 
-  delay(300000); //Llegeix mesura i envia cada 5mins.
+  DeepSleep(300000000); //Llegeix mesura i envia cada 5mins. En el interval de 5mins el microcontrolador
+                        //entra en mode Deep Sleep per estalviar energia (ja que s'alimenta d'una bateria)
 }
 
