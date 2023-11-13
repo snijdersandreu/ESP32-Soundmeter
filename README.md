@@ -1,6 +1,6 @@
 # Projecte Grup 4: Sonòmetre
 Descripció general del projecte
-
+Hem de seguir el guio de tfg? 
 
 <br><hr>
 
