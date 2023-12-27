@@ -160,9 +160,69 @@ void loop()
 ~~~
 
 # 2. Transmissió dades al Sentilo
-definicio del que s'ha fet en aquest apartat
-### 2.1 subapartat
-contingut subapartat
+
+En aquest apartat, es detalla la implementació de la transmissió de dades recollides pel sensor al servidor Sentilo. Aquest procés implica l'ús de la connexió WiFi de l'ESP32 per comunicar-se amb el servidor mitjançant sol·licituds HTTP PUT. A continuació, es descriu com s'ha realitzat aquesta transmissió.
+
+### 2.1 Configuració i Enllaç amb el Server Sentilo
+
+Per connectar-se amb el servidor Sentilo i transmetre les dades del sensor, es configuren les constants relacionades amb la connexió al servidor. Això inclou l'adreça del servidor, el token d'identificació, el proveïdor i el nom del sensor. Aquestes constants s'utilitzen en la construcció de les sol·licituds HTTP PUT.
+
+~~~cpp
+const char* host = "147.83.83.21";
+const char* token = "847a9b815a70f7b6d9176bb9e746471ccdb9bf22689505752dba31fe0ef567cf";
+const char* provider = "grup_4-101@provider_sonometre";
+const char* sensor = "Sensor_sonometre";
+~~~
+
+### 2.2 Construcció de la Sol·licitud PUT
+
+Per transmetre les dades al servidor Sentilo, es crea una sol·licitud HTTP PUT utilitzant la funció make_put_request. Aquesta funció pren el valor del nivell de pressió sonora (SPL_dBA) com a paràmetre i construeix la sol·licitud amb els paràmetres necessaris com a part de la URL i amb l'encapçalament.
+
+~~~cpp
+String make_put_request(byte SPL_dBA)
+{
+  String request = "PUT /data/";
+  request += String(provider);
+  request += '/';
+  request += String(sensor);
+  request += '/';
+  request += String(SPL_dBA);
+  request += " HTTP/1.1\r\nIDENTITY_KEY: ";
+  request += String(token);
+  request += "\r\n\r\n";
+  
+  return request;
+}
+~~~
+
+### 2.3 Enviament de la Sol·licitud PUT al Server
+
+Un cop construïda la sol·licitud PUT, aquesta és enviada al servidor utilitzant la funció send_PUT_request. Aquesta funció pren la sol·licitud com a paràmetre i utilitza el client WiFi per establir la connexió amb el servidor i enviar la sol·licitud.
+
+~~~cpp
+void send_PUT_request(byte SPL_dBA)
+{
+  String request = make_put_request(SPL_dBA);
+  client.print(request);
+}
+~~~
+
+### 2.4 Integració amb el Loop Principal
+
+Finalment, en el bucle principal del programa, es llegeix el valor del sensor, es construeix la sol·licitud PUT i es transmeten les dades al servidor Sentilo. Després d'això, el microcontrolador es posa en mode "Deep Sleep" per un temps específic per estalviar energia abans de la propera transmissió de dades.
+
+~~~cpp
+void loop()
+{ 
+  ...
+  byte SPL_dBA = reg_read(PCBARTISTS_DBM, I2C_REG_DECIBEL);
+  send_PUT_request(SPL_dBA);
+  ...
+  DeepSleep(300000000); // Interval de temps expressat en microsegons
+}
+~~~
+
+Aquest procés es repeteix a intervals regulars per mantenir actualitzades les dades al servidor Sentilo.
 
 <br><hr>
 
